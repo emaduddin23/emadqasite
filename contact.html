@@ -35,9 +35,15 @@
   <main>
     <section>
       <h2>Send Me a Message</h2>
-      <iframe
-        src="https://docs.google.com/forms/d/e/1FAIpQLSeJpVUAS_d4EdgYbwsczpCG8an48-Hpinl5O3cl8bk91EsADw/viewform?embedded=true"
-        width="100%" height="824" frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe>
+        <form id="contactForm">
+          <label for="name">Name:</label><br>
+          <input type="text" id="name" name="name" required><br><br>
+          <label for="email">Email:</label><br>
+          <input type="email" id="email" name="email" required><br><br>
+          <label for="message">Message:</label><br>
+          <textarea id="message" name="message" rows="4" required></textarea><br><br>
+          <button type="submit">Send Message</button>
+        </form>
     </section>
 
     <section>
@@ -69,6 +75,25 @@
     <p>© 2025 Md. Emad Uddin Aksir. All rights reserved.</p>
   </footer>
   <script src="script.js"></script>
+  <script>
+    document.getElementById('contactForm').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      const name = document.getElementById('name').value;
+      const email = document.getElementById('email').value;
+      const message = document.getElementById('message').value;
+      try {
+        await fetch('https://your-backend-url/contact', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ name, email, message })
+        });
+        window.location.href = 'thankyou.html';
+      } catch (err) {
+        alert('Submission failed. Please try again.');
+      }
+    });
+  </script>
+  </main>
 </body>
 
 </html>
