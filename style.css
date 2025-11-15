@@ -87,7 +87,7 @@
 
 /* About Me Section */
 .about-section {
-  padding: 80px 0; /* Increased padding for larger section */
+  padding: 20px 0;
   max-width: 900px;
 }
 
@@ -293,9 +293,10 @@
 /* Skills page card styles */
 .skills-container {
   display: grid;
-  grid-template-columns: repeat(4, 1fr); /* Fixed 4-column layout */
+  grid-template-columns: repeat(2, 1fr);
   gap: 30px;
   padding: 20px;
+  max-width: 1200px;
 }
 
 .skill-card {
@@ -304,6 +305,7 @@
   padding: 20px;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
   transition: all 0.3s ease;
+  text-align: left;
 }
 
 .skill-card:hover {
@@ -334,9 +336,9 @@
   font-size: 4.5rem;
   font-weight: 700;
   color: #e2e8f0;
-  margin-bottom: 40px;
-  line-height: 1.2;
-  letter-spacing: -1.5px;
+  /* margin-bottom: 40px; */
+  /* line-height: 1.2; */
+  /* letter-spacing: -1.5px; */
 }
 
 /* Experience Section Styling */
@@ -421,7 +423,9 @@
   }
   
   .skills-container {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: 1fr;
+    gap: 20px;
+    padding: 15px;
   }
 }
 
@@ -447,6 +451,12 @@
   }
   nav#main-nav ul li {
     margin: 0.5rem 0;
+  }
+  
+  .skills-container {
+    grid-template-columns: 1fr;
+    gap: 15px;
+    padding: 10px;
   }
   header h1 {
     font-size: 1.1rem;
@@ -635,8 +645,8 @@ section[id] {
 /* Hero Section */
 .hero-section {
   text-align: left;
-  padding: 100px 0 20px 0;
-  margin-bottom: 30px;
+  padding: 20px 0;
+  margin-bottom: 10px;
   background: transparent;
   border: none;
   box-shadow: none;
@@ -673,8 +683,8 @@ section[id] {
 section {
   background: transparent;
   backdrop-filter: none;
-  padding: 40px 0;
-  margin-bottom: 50px;
+  padding: 15px 0;
+  margin-bottom: 15px;
   border: none;
   border-radius: 0;
   box-shadow: none;
@@ -710,9 +720,7 @@ section p strong {
   display: none;
   cursor: pointer;
   padding: 10px;
-  position: absolute;
-  top: 20px;
-  right: 20px;
+  position: relative;
   z-index: 1001;
 }
 .hamburger-icon .bar {
@@ -751,11 +759,13 @@ section p strong {
   
   .hamburger-icon {
     order: 2;
+    position: static;
   }
   
   .header-social {
     order: 3;
     gap: 10px;
+    margin-left: auto;
   }
   
   .header-social a {
@@ -917,6 +927,10 @@ a:hover {
   
   main {
     padding: 30px 20px;
+  }
+  
+  .about-section {
+    margin: 0 auto;
   }
 }
 form {
@@ -1095,5 +1109,82 @@ just{
   }
   .header-text {
     text-align: center;
+  }
+}
+
+/* Four cards side by side */
+.four-cards {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+  padding: 20px;
+}
+
+.four-cards .card {
+  background: transparent;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease;
+  text-align: center;
+}
+
+.four-cards .card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+}
+
+.four-cards .card h3 {
+  color: #ffffff;
+  margin-bottom: 10px;
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+.four-cards .card p {
+  color: #cbd5e1;
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+/* Responsive for four cards */
+@media (max-width: 768px) {
+  .four-cards {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+    padding: 15px;
+  }
+  
+  .four-cards .card {
+    padding: 15px;
+  }
+  
+  .four-cards .card h3 {
+    font-size: 1.1rem;
+  }
+  
+  .four-cards .card p {
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .four-cards {
+    grid-template-columns: 1fr;
+    gap: 15px;
+    padding: 10px;
+  }
+  
+  .four-cards .card {
+    padding: 15px;
+    text-align: left;
+  }
+  
+  .four-cards .card h3 {
+    font-size: 1.1rem;
+  }
+  
+  .four-cards .card p {
+    font-size: 0.9rem;
   }
 }
