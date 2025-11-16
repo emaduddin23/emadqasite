@@ -757,19 +757,18 @@ section p strong {
     flex: 1;
   }
   
-  .hamburger-icon {
-    order: 2;
-    position: static;
-  }
-  
   .header-social {
-    order: 3;
+    order: 2;
     gap: 10px;
-    margin-left: auto;
   }
   
   .header-social a {
     font-size: 1.2rem;
+  }
+  
+  .hamburger-icon {
+    order: 3;
+    position: static;
   }
   
   nav#main-nav {
