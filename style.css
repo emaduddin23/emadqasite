@@ -516,7 +516,7 @@ body {
 header {
   background: linear-gradient(135deg, #0a0e27 0%, #1a1f3a 100%);
   color: #f8fafc;
-  padding: 20px 60px;
+  padding: 20px 1rem;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   position: sticky;
@@ -634,7 +634,7 @@ nav a.active {
 main {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 60px 40px;
+  padding: 60px 1rem;
 }
 
 /* Section spacing for scroll navigation */
@@ -911,8 +911,9 @@ a:hover {
   }
   
   .hero-title {
-    font-size: 2.5rem;
+    font-size: 3rem;
     letter-spacing: -1px;
+    margin-bottom: 20px;
   }
   
   .hero-description {
