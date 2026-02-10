@@ -656,10 +656,16 @@ header {
   text-decoration: none;
 }
 
+.header-brand .logo {
+  transition: transform 0.3s ease;
+}
+
+.header-brand:hover .logo {
+  transform: rotate(360deg);
+}
+
 .header-brand::before {
-  content: '◉';
-  font-size: 1.5rem;
-  color: #38bdf8;
+  display: none;
 }
 
 header h1 {
