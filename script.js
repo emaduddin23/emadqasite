@@ -44,4 +44,72 @@ document.addEventListener('DOMContentLoaded', function () {
   
   // Highlight on load
   highlightNavLink();
+
+  // Typing Effect for Hero Section
+  const typingTextElement = document.querySelector('.typing-text');
+  if (typingTextElement) {
+    const words = ["Researcher", "Tester", "Analyst"];
+    let wordIndex = 0;
+    let charIndex = 0;
+    let isDeleting = false;
+    let typingSpeed = 150;
+
+    function typeEffect() {
+      const currentWord = words[wordIndex];
+      
+      if (isDeleting) {
+        typingTextElement.textContent = currentWord.substring(0, charIndex - 1);
+        charIndex--;
+        typingSpeed = 50; // Faster deleting speed
+      } else {
+        typingTextElement.textContent = currentWord.substring(0, charIndex + 1);
+        charIndex++;
+        typingSpeed = 150; // Normal typing speed
+      }
+
+      if (!isDeleting && charIndex === currentWord.length) {
+        // Pause at the end of the word before deleting
+        isDeleting = true;
+        typingSpeed = 1500;
+      } else if (isDeleting && charIndex === 0) {
+        // Move to the next word after deleting is complete
+        isDeleting = false;
+        wordIndex = (wordIndex + 1) % words.length;
+        typingSpeed = 500; // Pause before typing the next word
+      }
+
+      setTimeout(typeEffect, typingSpeed);
+    }
+
+    // Start the typing effect
+    setTimeout(typeEffect, 1000);
+  }
+
+  // Theme Toggle Logic
+  const themeToggleBtn = document.getElementById('theme-toggle');
+  const icon = themeToggleBtn ? themeToggleBtn.querySelector('i') : null;
+
+  if (themeToggleBtn && icon) {
+    // Check local storage for saved theme preference
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme === 'light') {
+      document.body.classList.add('light-mode');
+      icon.classList.remove('fa-moon');
+      icon.classList.add('fa-sun');
+    }
+
+    themeToggleBtn.addEventListener('click', () => {
+      document.body.classList.toggle('light-mode');
+      
+      if (document.body.classList.contains('light-mode')) {
+        icon.classList.remove('fa-moon');
+        icon.classList.add('fa-sun');
+        localStorage.setItem('theme', 'light');
+      } else {
+        icon.classList.remove('fa-sun');
+        icon.classList.add('fa-moon');
+        localStorage.setItem('theme', 'dark');
+      }
+    });
+  }
 }); 

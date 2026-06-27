@@ -8,7 +8,7 @@
   <!-- Favicon -->
   <link rel="icon" href="icon-2.jpeg" type="image/png" sizes="32x32" />
   <link rel="apple-touch-icon" href="icon-2.jpeg" />
-  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="style.css?v=4" />
   <!-- Font Awesome for icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
 </head>
@@ -43,6 +43,9 @@
     </nav>
 
     <div class="header-social">
+      <button id="theme-toggle" class="theme-toggle-btn" aria-label="Toggle Dark/Light Mode">
+        <i class="fas fa-moon"></i>
+      </button>
       <a href="https://github.com/emaduddin23" target="_blank" rel="noopener noreferrer" title="GitHub">
         <i class="fab fa-github"></i>
       </a>
@@ -60,20 +63,36 @@
 
   <main>
     <!-- Hero Section -->
-    <section id="home" class="hero-section">
-      <h1 class="hero-title">Welcome to<br />Emad's Portfolio</h1>
-      <p class="hero-description">
-        I am a Software QA Engineer with a passion for
-        <span class="highlight">Manual & Automation Testing</span> and
-        <span class="highlight">Quality Assurance</span>.<br />
-        I have a skillset of <span class="highlight">Manual Testing</span>,
-        <span class="highlight">API Testing</span>,
-        <span class="highlight">Automation Testing</span>,
-        <span class="highlight">Azure DevOps</span>,
-        <span class="highlight">Selenium</span>,
-        <span class="highlight">Postman</span>, and
-        <span class="highlight">Quality Engineering</span>.
-      </p>
+    <section id="home" class="hero-section hero-split">
+      <div class="hero-split-wrapper">
+        <div class="hero-split-text">
+          <h1 class="hero-title">
+            Software QA<br />
+            Engineer &<br />
+            <span class="typing-text"></span><span class="typing-cursor">&nbsp;</span>
+          </h1>
+          <p class="hero-description">
+            I am a Software QA Engineer with a passion for
+            <span class="highlight">Manual & Automation Testing</span> and
+            <span class="highlight">Quality Assurance</span>.<br />
+            I have a skillset of <span class="highlight">Manual Testing</span>,
+            <span class="highlight">API Testing</span>,
+            <span class="highlight">Automation Testing</span>,
+            <span class="highlight">Azure DevOps</span>,
+            <span class="highlight">Selenium</span>,
+            <span class="highlight">Postman</span>, and
+            <span class="highlight">Quality Engineering</span>.
+          </p>
+        </div>
+        <div class="hero-split-image">
+          <div class="hero-photo-card">
+            <img src="Pictures.jpg" alt="Md. Emad Uddin Aksir" class="hero-photo" />
+            <div class="hero-photo-overlay">
+              <span class="hero-photo-name">EMAD</span>
+            </div>
+          </div>
+        </div>
+      </div>
     </section>
 
     <!-- About Section -->
@@ -602,7 +621,7 @@
   <footer>
     <p>&copy; 2025 Md. Emad Uddin Aksir. All rights reserved.</p>
   </footer>
-  <script src="script.js"></script>
+  <script src="script.js?v=2"></script>
 </body>
 
 </html>
