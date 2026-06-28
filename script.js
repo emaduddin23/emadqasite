@@ -112,4 +112,54 @@ document.addEventListener('DOMContentLoaded', function () {
       }
     });
   }
+
+  // ===== Visitor Views Counter =====
+  const viewsCountEl = document.getElementById('views-count');
+  if (viewsCountEl) {
+    // Get current count from localStorage
+    let totalViews = parseInt(localStorage.getItem('site_views') || '0', 10);
+
+    // Check if this is a new session (hasn't been counted today)
+    const lastVisitDate = localStorage.getItem('last_visit_date');
+    const today = new Date().toDateString();
+
+    if (lastVisitDate !== today) {
+      // New day = new visit counted
+      totalViews++;
+      localStorage.setItem('site_views', totalViews.toString());
+      localStorage.setItem('last_visit_date', today);
+    }
+
+    // Animated count-up effect
+    function animateCounter(target, duration) {
+      const start = 0;
+      const startTime = performance.now();
+
+      function updateCount(currentTime) {
+        const elapsed = currentTime - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+
+        // Ease out cubic for smooth deceleration
+        const eased = 1 - Math.pow(1 - progress, 3);
+        const current = Math.floor(start + (target - start) * eased);
+
+        viewsCountEl.textContent = current.toLocaleString();
+
+        if (progress < 1) {
+          requestAnimationFrame(updateCount);
+        } else {
+          viewsCountEl.textContent = target.toLocaleString();
+          viewsCountEl.classList.add('counting');
+          setTimeout(() => viewsCountEl.classList.remove('counting'), 300);
+        }
+      }
+
+      requestAnimationFrame(updateCount);
+    }
+
+    // Start counting animation after a short delay
+    setTimeout(() => {
+      animateCounter(totalViews, 1200);
+    }, 500);
+  }
 }); 
