@@ -1984,3 +1984,164 @@ body.light-mode .views-number {
     font-size: 1.3rem;
   }
 }
+
+/* ===== Floating Scroll Buttons ===== */
+.floating-scroll-btns {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 12px;
+  z-index: 9999;
+}
+
+.scroll-btn {
+  height: 48px;
+  min-width: 48px;
+  border-radius: 50px;
+  border: 1px solid rgba(56, 189, 248, 0.3);
+  background: rgba(10, 14, 39, 0.75);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  color: #38bdf8;
+  font-size: 1.1rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  padding: 0 14px;
+  white-space: nowrap;
+  overflow: hidden;
+  box-shadow:
+    0 4px 20px rgba(0, 0, 0, 0.4),
+    0 0 15px rgba(56, 189, 248, 0.1);
+  transition: all 0.35s cubic-bezier(0.25, 0.8, 0.25, 1);
+  opacity: 0;
+  transform: translateY(20px) scale(0.8);
+  pointer-events: none;
+}
+
+.scroll-btn-label {
+  max-width: 0;
+  overflow: hidden;
+  opacity: 0;
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  color: #e2e8f0;
+  transition: max-width 0.4s cubic-bezier(0.25, 0.8, 0.25, 1),
+              opacity 0.3s ease 0.05s,
+              margin 0.4s ease;
+  margin-right: 0;
+  display: inline-block;
+}
+
+.scroll-btn:hover .scroll-btn-label {
+  max-width: 100px;
+  opacity: 1;
+  margin-right: 10px;
+}
+
+.scroll-btn .fa-chevron-down,
+.scroll-btn .fa-chevron-up {
+  flex-shrink: 0;
+  transition: transform 0.3s ease;
+}
+
+.scroll-btn:hover .fa-chevron-down {
+  transform: translateY(3px);
+}
+
+.scroll-btn:hover .fa-chevron-up {
+  transform: translateY(-3px);
+}
+
+.scroll-btn.visible {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  pointer-events: auto;
+}
+
+.scroll-btn:hover {
+  background: rgba(56, 189, 248, 0.15);
+  border-color: rgba(56, 189, 248, 0.6);
+  color: #ffffff;
+  box-shadow:
+    0 8px 30px rgba(0, 0, 0, 0.5),
+    0 0 25px rgba(56, 189, 248, 0.25);
+  transform: translateY(-2px) scale(1.05);
+}
+
+.scroll-btn:active {
+  transform: translateY(0) scale(0.97);
+  transition-duration: 0.1s;
+}
+
+/* Subtle pulse animation on idle */
+@keyframes scrollBtnPulse {
+  0%, 100% {
+    box-shadow:
+      0 4px 20px rgba(0, 0, 0, 0.4),
+      0 0 15px rgba(56, 189, 248, 0.1);
+  }
+  50% {
+    box-shadow:
+      0 4px 20px rgba(0, 0, 0, 0.4),
+      0 0 25px rgba(56, 189, 248, 0.2);
+  }
+}
+
+.scroll-btn.visible {
+  animation: scrollBtnPulse 3s ease-in-out infinite;
+}
+
+.scroll-btn.visible:hover {
+  animation: none;
+}
+
+/* Light mode overrides */
+body.light-mode .scroll-btn {
+  background: rgba(255, 255, 255, 0.8);
+  border-color: rgba(14, 165, 233, 0.3);
+  color: #0284c7;
+  box-shadow:
+    0 4px 20px rgba(0, 0, 0, 0.1),
+    0 0 15px rgba(14, 165, 233, 0.08);
+}
+
+body.light-mode .scroll-btn:hover {
+  background: rgba(14, 165, 233, 0.12);
+  border-color: rgba(14, 165, 233, 0.5);
+  color: #0369a1;
+  box-shadow:
+    0 8px 30px rgba(0, 0, 0, 0.15),
+    0 0 25px rgba(14, 165, 233, 0.2);
+}
+
+body.light-mode .scroll-btn-label {
+  color: #1e293b;
+}
+
+/* Responsive adjustments */
+@media (max-width: 600px) {
+  .floating-scroll-btns {
+    bottom: 20px;
+    right: 16px;
+    gap: 10px;
+  }
+
+  .scroll-btn {
+    height: 42px;
+    min-width: 42px;
+    font-size: 1rem;
+    padding: 0 12px;
+  }
+
+  .scroll-btn-label {
+    font-size: 0.75rem;
+  }
+}

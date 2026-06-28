@@ -162,4 +162,55 @@ document.addEventListener('DOMContentLoaded', function () {
       animateCounter(totalViews, 1200);
     }, 500);
   }
+  // ===== Floating Scroll Buttons =====
+  const scrollToTopBtn = document.getElementById('scroll-to-top');
+  const scrollToBottomBtn = document.getElementById('scroll-to-bottom');
+
+  if (scrollToTopBtn && scrollToBottomBtn) {
+    function updateScrollButtons() {
+      const scrollY = window.scrollY;
+      const windowHeight = window.innerHeight;
+      const docHeight = document.documentElement.scrollHeight;
+      const scrollPercent = scrollY / (docHeight - windowHeight);
+
+      // Show "scroll to top" after scrolling down 300px
+      if (scrollY > 300) {
+        scrollToTopBtn.classList.add('visible');
+      } else {
+        scrollToTopBtn.classList.remove('visible');
+      }
+
+      // Show "scroll to bottom" when user is NOT near the bottom (top 85%)
+      if (scrollPercent < 0.85) {
+        scrollToBottomBtn.classList.add('visible');
+      } else {
+        scrollToBottomBtn.classList.remove('visible');
+      }
+    }
+
+    // Scroll to top
+    scrollToTopBtn.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+
+    // Scroll to bottom
+    scrollToBottomBtn.addEventListener('click', () => {
+      window.scrollTo({ top: document.documentElement.scrollHeight, behavior: 'smooth' });
+    });
+
+    // Listen for scroll events (throttled with requestAnimationFrame)
+    let scrollTicking = false;
+    window.addEventListener('scroll', () => {
+      if (!scrollTicking) {
+        requestAnimationFrame(() => {
+          updateScrollButtons();
+          scrollTicking = false;
+        });
+        scrollTicking = true;
+      }
+    });
+
+    // Initial check
+    updateScrollButtons();
+  }
 }); 
