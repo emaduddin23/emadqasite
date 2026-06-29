@@ -113,23 +113,9 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
-  // ===== Visitor Views Counter =====
+  // ===== Visitor Views Counter (Server-Side via Netlify Function) =====
   const viewsCountEl = document.getElementById('views-count');
   if (viewsCountEl) {
-    // Get current count from localStorage
-    let totalViews = parseInt(localStorage.getItem('site_views') || '0', 10);
-
-    // Check if this is a new session (hasn't been counted today)
-    const lastVisitDate = localStorage.getItem('last_visit_date');
-    const today = new Date().toDateString();
-
-    if (lastVisitDate !== today) {
-      // New day = new visit counted
-      totalViews++;
-      localStorage.setItem('site_views', totalViews.toString());
-      localStorage.setItem('last_visit_date', today);
-    }
-
     // Animated count-up effect
     function animateCounter(target, duration) {
       const start = 0;
@@ -157,10 +143,26 @@ document.addEventListener('DOMContentLoaded', function () {
       requestAnimationFrame(updateCount);
     }
 
-    // Start counting animation after a short delay
-    setTimeout(() => {
-      animateCounter(totalViews, 1200);
-    }, 500);
+    // Check if this session already counted the view
+    const alreadyCounted = sessionStorage.getItem('view_counted');
+
+    // POST = increment + return count (new session)
+    // GET  = just return count (already counted this session)
+    const method = alreadyCounted ? 'GET' : 'POST';
+
+    fetch('/.netlify/functions/views', { method })
+      .then(res => res.json())
+      .then(data => {
+        if (!alreadyCounted) {
+          sessionStorage.setItem('view_counted', 'true');
+        }
+        setTimeout(() => {
+          animateCounter(data.views || 0, 1200);
+        }, 500);
+      })
+      .catch(() => {
+        viewsCountEl.textContent = '—';
+      });
   }
   // ===== Floating Scroll Buttons =====
   const scrollToTopBtn = document.getElementById('scroll-to-top');
