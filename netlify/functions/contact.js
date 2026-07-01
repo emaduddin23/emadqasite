@@ -1,47 +1,135 @@
-// const axios = require('axios');
+const mysql = require('mysql2/promise');
 
-// exports.handler = async function(event, context) {
-//   if (event.httpMethod !== 'POST') {
-//     return {
-//       statusCode: 405,
-//       body: 'Method Not Allowed',
-//     };
-//   }
+// MySQL connection config from Netlify environment variables
+function getDbConfig() {
+  return {
+    host: process.env.MYSQL_HOST,
+    user: process.env.MYSQL_USER,
+    password: process.env.MYSQL_PASSWORD,
+    database: process.env.MYSQL_DATABASE,
+    port: parseInt(process.env.MYSQL_PORT || '3306', 10),
+    ssl: {
+      rejectUnauthorized: false
+    },
+    connectTimeout: 10000
+  };
+}
 
-//   try {
-//     const { name, email, message } = JSON.parse(event.body);
+// Ensure the contacts table exists
+async function ensureTable(connection) {
+  await connection.execute(`
+    CREATE TABLE IF NOT EXISTS contacts (
+      id INT AUTO_INCREMENT PRIMARY KEY,
+      name VARCHAR(255) NOT NULL,
+      email VARCHAR(255) NOT NULL,
+      message TEXT NOT NULL,
+      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    )
+  `);
+}
 
-//     // // Notion API details
-//     // const NOTION_TOKEN = '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'; // <-- Replace with your token
-//     // const DATABASE_ID = '265d93cba0a8805d8599d4189a15c14d'; // <-- Replace with your database ID
+exports.handler = async function (event, context) {
+  const headers = {
+    'Access-Control-Allow-Origin': '*',
+    'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+    'Access-Control-Allow-Headers': 'Content-Type',
+    'Content-Type': 'application/json',
+    'Cache-Control': 'no-cache, no-store'
+  };
 
-//     await axios.post(
-//       'https://api.notion.com/v1/pages',
-//       {
-//         parent: { database_id: DATABASE_ID },
-//         properties: {
-//           Name: { title: [{ text: { content: name } }] },
-//           Email: { email: email },
-//           Message: { rich_text: [{ text: { content: message } }] }
-//         }
-//       },
-//       {
-//         headers: {
-//           'Authorization': `Bearer ${NOTION_TOKEN}`,
-//           'Notion-Version': '2022-06-28',
-//           'Content-Type': 'application/json'
-//         }
-//       }
-//     );
+  // Handle CORS preflight
+  if (event.httpMethod === 'OPTIONS') {
+    return { statusCode: 204, headers };
+  }
 
-//     return {
-//       statusCode: 200,
-//       body: JSON.stringify({ success: true })
-//     };
-//   } catch (error) {
-//     return {
-//       statusCode: 500,
-//       body: JSON.stringify({ error: error.message })
-//     };
-//   }
-// };
+  let connection;
+
+  try {
+    connection = await mysql.createConnection(getDbConfig());
+    await ensureTable(connection);
+
+    // POST — Save a new contact submission
+    if (event.httpMethod === 'POST') {
+      const body = JSON.parse(event.body || '{}');
+      const { name, email, message } = body;
+
+      // Validate required fields
+      if (!name || !email || !message) {
+        return {
+          statusCode: 400,
+          headers,
+          body: JSON.stringify({
+            success: false,
+            error: 'Name, email, and message are all required.'
+          })
+        };
+      }
+
+      // Validate email format
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(email)) {
+        return {
+          statusCode: 400,
+          headers,
+          body: JSON.stringify({
+            success: false,
+            error: 'Please provide a valid email address.'
+          })
+        };
+      }
+
+      // Insert into database
+      await connection.execute(
+        'INSERT INTO contacts (name, email, message) VALUES (?, ?, ?)',
+        [name.trim(), email.trim(), message.trim()]
+      );
+
+      return {
+        statusCode: 200,
+        headers,
+        body: JSON.stringify({
+          success: true,
+          message: 'Thank you! Your message has been received.'
+        })
+      };
+    }
+
+    // GET — Retrieve all contact submissions (admin use)
+    if (event.httpMethod === 'GET') {
+      const [rows] = await connection.execute(
+        'SELECT * FROM contacts ORDER BY created_at DESC'
+      );
+
+      return {
+        statusCode: 200,
+        headers,
+        body: JSON.stringify({
+          success: true,
+          count: rows.length,
+          submissions: rows
+        })
+      };
+    }
+
+    return {
+      statusCode: 405,
+      headers,
+      body: JSON.stringify({ error: 'Method not allowed' })
+    };
+
+  } catch (error) {
+    console.error('Contact function error:', error);
+    return {
+      statusCode: 500,
+      headers,
+      body: JSON.stringify({
+        success: false,
+        error: 'Something went wrong. Please try again later.'
+      })
+    };
+  } finally {
+    if (connection) {
+      await connection.end();
+    }
+  }
+};

@@ -215,4 +215,83 @@ document.addEventListener('DOMContentLoaded', function () {
     // Initial check
     updateScrollButtons();
   }
-}); 
+
+  // ===== Contact Form Handler =====
+  const contactForm = document.getElementById('contact-form');
+  const contactSubmitBtn = document.getElementById('contact-submit');
+  const contactToast = document.getElementById('contact-toast');
+
+  if (contactForm && contactSubmitBtn && contactToast) {
+    function showToast(type, message) {
+      const toastIcon = contactToast.querySelector('.toast-icon i');
+      const toastMsg = contactToast.querySelector('.toast-message');
+
+      // Reset classes
+      contactToast.classList.remove('show', 'success', 'error');
+
+      // Set type
+      contactToast.classList.add(type);
+      toastMsg.textContent = message;
+
+      if (type === 'success') {
+        toastIcon.className = 'fas fa-check-circle';
+      } else {
+        toastIcon.className = 'fas fa-exclamation-circle';
+      }
+
+      // Trigger show with slight delay for animation
+      requestAnimationFrame(() => {
+        contactToast.classList.add('show');
+      });
+
+      // Auto-hide after 6 seconds
+      setTimeout(() => {
+        contactToast.classList.remove('show');
+      }, 6000);
+    }
+
+    contactForm.addEventListener('submit', async function (e) {
+      e.preventDefault();
+
+      const name = document.getElementById('contact-name').value.trim();
+      const email = document.getElementById('contact-email').value.trim();
+      const message = document.getElementById('contact-message').value.trim();
+
+      // Client-side validation
+      if (!name || !email || !message) {
+        showToast('error', 'Please fill in all fields.');
+        return;
+      }
+
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(email)) {
+        showToast('error', 'Please enter a valid email address.');
+        return;
+      }
+
+      // Show loading state
+      contactSubmitBtn.classList.add('loading');
+
+      try {
+        const response = await fetch('/.netlify/functions/contact', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ name, email, message })
+        });
+
+        const data = await response.json();
+
+        if (response.ok && data.success) {
+          showToast('success', data.message || 'Message sent successfully!');
+          contactForm.reset();
+        } else {
+          showToast('error', data.error || 'Something went wrong. Please try again.');
+        }
+      } catch (err) {
+        showToast('error', 'Network error. Please check your connection and try again.');
+      } finally {
+        contactSubmitBtn.classList.remove('loading');
+      }
+    });
+  }
+});

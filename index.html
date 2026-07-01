@@ -39,6 +39,7 @@
         <li><a href="#skills">Technical</a></li>
         <li><a href="#experience">Experience</a></li>
         <li><a href="#learning">Learning</a></li>
+        <li><a href="#contact">Contact</a></li>
       </ul>
     </nav>
 
@@ -575,46 +576,99 @@
       </p>
     </section>
 
-    <!-- Contact Section removed by user request -->
+    <!-- Contact Section -->
+    <section id="contact" class="contact-section">
+      <h1 class="hero-title">Get In Touch</h1>
+      <p class="contact-subtitle">Have a question or want to work together? Drop me a message!</p>
 
-    <section>
-      <h1 class="hero-title">Contact</h1>
-      <p>
-        <strong>Email:</strong>
-        <a href="mailto:emad.aksir@uapp.uk">emad.aksir@uapp.uk</a>,
-        <a href="mailto:emaduddinaksir@gmail.com">emaduddinaksir@gmail.com</a>
-      </p>
+      <div class="contact-grid">
+        <!-- Contact Info Cards -->
+        <div class="contact-info-side">
+          <div class="contact-info-card">
+            <div class="contact-info-icon">
+              <i class="fas fa-envelope"></i>
+            </div>
+            <div class="contact-info-content">
+              <h3>Email</h3>
+              <a href="mailto:emaduddinaksir@gmail.com">emaduddinaksir@gmail.com</a>
+              <a href="mailto:emad.aksir@uapp.uk">emad.aksir@uapp.uk</a>
+            </div>
+          </div>
 
-      <!-- <h2>Connect with Me</h2>
-        <ul class="social-links">
-          <li>
-            <a
-              href="https://www.linkedin.com/in/emaduddin9923/"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <i class="fab fa-linkedin"></i> LinkedIn
-            </a>
-          </li>
-          <li>
-            <a
-              href="https://github.com/emaduddin23"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <i class="fab fa-github"></i> GitHub
-            </a>
-          </li>
-          <li>
-            <a
-              href="https://www.hackerrank.com/Emad170"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <i class="fab fa-hackerrank"></i> HackerRank
-            </a>
-          </li>
-        </ul> -->
+          <div class="contact-info-card">
+            <div class="contact-info-icon">
+              <i class="fab fa-linkedin"></i>
+            </div>
+            <div class="contact-info-content">
+              <h3>LinkedIn</h3>
+              <a href="https://www.linkedin.com/in/emaduddin9923/" target="_blank" rel="noopener noreferrer">Connect on LinkedIn</a>
+            </div>
+          </div>
+
+          <div class="contact-info-card">
+            <div class="contact-info-icon">
+              <i class="fas fa-map-marker-alt"></i>
+            </div>
+            <div class="contact-info-content">
+              <h3>Location</h3>
+              <p>Dhaka, Bangladesh</p>
+            </div>
+          </div>
+
+          <div class="contact-info-card">
+            <div class="contact-info-icon">
+              <i class="fab fa-github"></i>
+            </div>
+            <div class="contact-info-content">
+              <h3>GitHub</h3>
+              <a href="https://github.com/emaduddin23" target="_blank" rel="noopener noreferrer">View my projects</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Contact Form -->
+        <div class="contact-form-card">
+          <form id="contact-form" autocomplete="off">
+            <div class="form-group">
+              <label for="contact-name">Full Name</label>
+              <div class="input-wrapper">
+                <i class="fas fa-user"></i>
+                <input type="text" id="contact-name" name="name" placeholder="Your name" required />
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="contact-email">Email Address</label>
+              <div class="input-wrapper">
+                <i class="fas fa-at"></i>
+                <input type="email" id="contact-email" name="email" placeholder="you@example.com" required />
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="contact-message">Message</label>
+              <div class="input-wrapper textarea-wrapper">
+                <i class="fas fa-comment-dots"></i>
+                <textarea id="contact-message" name="message" rows="5" placeholder="Write your message here..." required></textarea>
+              </div>
+            </div>
+
+            <button type="submit" id="contact-submit" class="contact-submit-btn">
+              <span class="btn-text">Send Message</span>
+              <span class="btn-loader">
+                <i class="fas fa-spinner fa-spin"></i>
+              </span>
+              <i class="fas fa-paper-plane btn-icon"></i>
+            </button>
+          </form>
+
+          <!-- Success / Error Toast -->
+          <div id="contact-toast" class="contact-toast">
+            <div class="toast-icon"><i class="fas fa-check-circle"></i></div>
+            <span class="toast-message">Message sent successfully!</span>
+          </div>
+        </div>
+      </div>
     </section>
   </main>
 
