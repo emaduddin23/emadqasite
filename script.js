@@ -150,7 +150,7 @@ document.addEventListener('DOMContentLoaded', function () {
     // GET  = just return count (already counted this session)
     const method = alreadyCounted ? 'GET' : 'POST';
 
-    fetch('/.netlify/functions/views', { method })
+    fetch('/api/views', { method })
       .then(res => res.json())
       .then(data => {
         if (!alreadyCounted) {
@@ -273,7 +273,7 @@ document.addEventListener('DOMContentLoaded', function () {
       contactSubmitBtn.classList.add('loading');
 
       try {
-        const response = await fetch('/.netlify/functions/contact', {
+        const response = await fetch('/api/contact', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ name, email, message })
