@@ -113,56 +113,10 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
-  // ===== Visitor Views Counter (Server-Side via Netlify Function) =====
+  // ===== Visitor Views Counter =====
   const viewsCountEl = document.getElementById('views-count');
   if (viewsCountEl) {
-    // Animated count-up effect
-    function animateCounter(target, duration) {
-      const start = 0;
-      const startTime = performance.now();
-
-      function updateCount(currentTime) {
-        const elapsed = currentTime - startTime;
-        const progress = Math.min(elapsed / duration, 1);
-
-        // Ease out cubic for smooth deceleration
-        const eased = 1 - Math.pow(1 - progress, 3);
-        const current = Math.floor(start + (target - start) * eased);
-
-        viewsCountEl.textContent = current.toLocaleString();
-
-        if (progress < 1) {
-          requestAnimationFrame(updateCount);
-        } else {
-          viewsCountEl.textContent = target.toLocaleString();
-          viewsCountEl.classList.add('counting');
-          setTimeout(() => viewsCountEl.classList.remove('counting'), 300);
-        }
-      }
-
-      requestAnimationFrame(updateCount);
-    }
-
-    // Check if this session already counted the view
-    const alreadyCounted = sessionStorage.getItem('view_counted');
-
-    // POST = increment + return count (new session)
-    // GET  = just return count (already counted this session)
-    const method = alreadyCounted ? 'GET' : 'POST';
-
-    fetch('/api/views', { method })
-      .then(res => res.json())
-      .then(data => {
-        if (!alreadyCounted) {
-          sessionStorage.setItem('view_counted', 'true');
-        }
-        setTimeout(() => {
-          animateCounter(data.views || 0, 1200);
-        }, 500);
-      })
-      .catch(() => {
-        viewsCountEl.textContent = '—';
-      });
+    viewsCountEl.textContent = '100+'; // Static placeholder since backend is removed
   }
   // ===== Floating Scroll Buttons =====
   const scrollToTopBtn = document.getElementById('scroll-to-top');
