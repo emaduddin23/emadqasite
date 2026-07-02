@@ -8,9 +8,6 @@ function getDbConfig() {
     password: process.env.MYSQL_PASSWORD,
     database: process.env.MYSQL_DATABASE,
     port: parseInt(process.env.MYSQL_PORT || '3306', 10),
-    ssl: {
-      rejectUnauthorized: false
-    },
     connectTimeout: 10000
   };
 }
