@@ -1,4 +1,5 @@
 const mysql = require('mysql2/promise');
+const nodemailer = require('nodemailer');
 
 // MySQL connection config from Netlify environment variables
 function getDbConfig() {
@@ -80,6 +81,28 @@ exports.handler = async function (event, context) {
         'INSERT INTO contacts (name, email, message) VALUES (?, ?, ?)',
         [name.trim(), email.trim(), message.trim()]
       );
+
+      // Send email notification
+      try {
+        const transporter = nodemailer.createTransport({
+          service: 'gmail',
+          auth: {
+            user: process.env.EMAIL_USER,
+            pass: process.env.EMAIL_PASS
+          }
+        });
+
+        await transporter.sendMail({
+          from: process.env.EMAIL_USER,
+          to: process.env.EMAIL_USER, // Send notification to yourself
+          replyTo: email.trim(),
+          subject: `New Contact Form Submission from ${name.trim()}`,
+          text: `You have received a new message from your website contact form.\n\nName: ${name.trim()}\nEmail: ${email.trim()}\n\nMessage:\n${message.trim()}`
+        });
+      } catch (emailError) {
+        console.error('Email notification failed:', emailError);
+        // Do not return error to user if email fails but DB succeeds
+      }
 
       return {
         statusCode: 200,
