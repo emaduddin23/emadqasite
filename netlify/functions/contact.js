@@ -92,12 +92,57 @@ exports.handler = async function (event, context) {
           }
         });
 
+        const htmlContent = `
+          <div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; max-width: 600px; margin: 0 auto; background-color: #f9fafb; padding: 40px 20px;">
+            <div style="background-color: #ffffff; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.05); border: 1px solid #e5e7eb;">
+              
+              <!-- Header -->
+              <div style="background-color: #111827; padding: 30px 40px; text-align: center;">
+                <h1 style="color: #ffffff; margin: 0; font-size: 20px; font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase;">New Inquiry Received</h1>
+                <p style="color: #9ca3af; margin: 8px 0 0 0; font-size: 14px;">Emad QA Site Contact Form</p>
+              </div>
+
+              <!-- Body -->
+              <div style="padding: 40px;">
+                <p style="margin: 0 0 24px 0; font-size: 16px; color: #374151; line-height: 1.6;">You have a new message from a visitor on your website. Here are the details of the inquiry:</p>
+                
+                <!-- Details Table -->
+                <table style="width: 100%; border-collapse: collapse; margin-bottom: 30px;">
+                  <tr>
+                    <td style="padding: 12px 0; border-bottom: 1px solid #e5e7eb; width: 130px; color: #6b7280; font-size: 13px; font-weight: 600; text-transform: uppercase;">Sender Name</td>
+                    <td style="padding: 12px 0; border-bottom: 1px solid #e5e7eb; color: #111827; font-size: 16px; font-weight: 500;">${name.trim()}</td>
+                  </tr>
+                  <tr>
+                    <td style="padding: 12px 0; border-bottom: 1px solid #e5e7eb; width: 130px; color: #6b7280; font-size: 13px; font-weight: 600; text-transform: uppercase;">Email Address</td>
+                    <td style="padding: 12px 0; border-bottom: 1px solid #e5e7eb; font-size: 16px;">
+                      <a href="mailto:${email.trim()}" style="color: #2563eb; text-decoration: none; font-weight: 500;">${email.trim()}</a>
+                    </td>
+                  </tr>
+                </table>
+
+                <!-- Message Area -->
+                <div style="margin-bottom: 8px; color: #6b7280; font-size: 13px; font-weight: 600; text-transform: uppercase;">Message Content</div>
+                <div style="background-color: #f3f4f6; border-radius: 6px; padding: 20px; color: #374151; font-size: 15px; line-height: 1.7; white-space: pre-wrap; border: 1px solid #e5e7eb;">${message.trim()}</div>
+                
+              </div>
+
+              <!-- Footer -->
+              <div style="background-color: #f9fafb; padding: 20px 40px; border-top: 1px solid #e5e7eb; text-align: center;">
+                <p style="margin: 0; color: #6b7280; font-size: 13px;">This email was automatically generated from your portfolio website.</p>
+                <p style="margin: 6px 0 0 0; color: #9ca3af; font-size: 12px;">Please reply directly to the sender's email address above.</p>
+              </div>
+
+            </div>
+          </div>
+        `;
+
         await transporter.sendMail({
           from: process.env.EMAIL_USER,
           to: process.env.EMAIL_USER, // Send notification to yourself
           replyTo: email.trim(),
-          subject: `New Contact Form Submission from ${name.trim()}`,
-          text: `You have received a new message from your website contact form.\n\nName: ${name.trim()}\nEmail: ${email.trim()}\n\nMessage:\n${message.trim()}`
+          subject: `New Message from ${name.trim()} - Website Contact Form`,
+          text: `You have received a new message from your website contact form.\n\nName: ${name.trim()}\nEmail: ${email.trim()}\n\nMessage:\n${message.trim()}`,
+          html: htmlContent
         });
       } catch (emailError) {
         console.error('Email notification failed:', emailError);
